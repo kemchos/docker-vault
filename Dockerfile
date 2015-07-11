@@ -1,15 +1,15 @@
 FROM alpine:latest
 
-ENV VAULT_VERSION 0.1.2
+ENV VAULT_VERSION v0.2.0.rc1
 
-RUN  apk --update add wget \
+RUN apk --update add wget \
   && mkdir -p /tmp/src \
   && cd /tmp/src \
-  && wget --no-check-certificate https://dl.bintray.com/mitchellh/vault/vault_${VAULT_VERSION}_linux_amd64.zip \
-  && unzip vault_${VAULT_VERSION}_linux_amd64.zip \
+  && wget --no-check-certificate https://github.com/hashicorp/vault/releases/download/${VAULT_VERSION}/linux_amd64.zip \
+  && unzip linux_amd64.zip \
   && mv vault /usr/local/bin/ \
-  && rm -rf /tmp/src \
-  && rm -rf /var/cache/apk/*
+  && apk del --purge wget \
+  && rm -rf /tmp/* /var/cache/apk/*
 
 
 COPY config.hcl /opt/vault/
